@@ -1,5 +1,7 @@
 const apiUrlLibros = 'http://localhost:3000/api/libros';
 const apiUrlMiembros = 'http://localhost:3000/api/miembros';
+const apiUrlPrestamos = 'http://localhost:3000/api/prestamos';
+const apiUrlDevoluciones = 'http://localhost:3000/api/devoluciones';
 
 // Función para cargar todos los libros
 async function loadLibros() {
@@ -86,9 +88,65 @@ async function guardarMiembro(event) {
   loadMiembros();
 }
 
+// Función para tomar prestado un libro
+async function tomarPrestado(event) {
+  event.preventDefault();
+  const idMiembro = document.getElementById('miembro-select').value;
+  const idLibro = document.getElementById('libro-select').value;
+
+  const data = { idMiembro, idLibro };
+
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  };
+
+  await fetch(apiUrlPrestamos, options);
+  loadLibros();
+}
+
+// Función para devolver un libro
+async function devolverLibro(event) {
+  event.preventDefault();
+  const idMiembro = document.getElementById('miembro-select-devolucion').value;
+  const idLibro = document.getElementById('libro-select-devolucion').value;
+
+  const data = { idMiembro, idLibro };
+
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  };
+
+  await fetch(apiUrlDevoluciones, options);
+  loadLibros();
+}
+
+// Función para mostrar libros disponibles
+async function mostrarLibrosDisponibles() {
+  const response = await fetch(apiUrlLibros);
+  const libros = await response.json();
+  
+  const librosDisponibles = libros.filter(libro => libro.disponible);
+  const librosDisponiblesDiv = document.getElementById('libros-disponibles');
+  librosDisponiblesDiv.innerHTML = ''; // Limpia la sección
+
+  librosDisponibles.forEach(libro => {
+    const libroDiv = document.createElement('div');
+    libroDiv.textContent = `${libro.titulo} - ${libro.autor}`;
+    librosDisponiblesDiv.appendChild(libroDiv);
+  });
+}
+
 // Inicializa el evento de envío del formulario
 document.getElementById('form-libros').addEventListener('submit', guardarLibro);
 document.getElementById('form-miembros').addEventListener('submit', guardarMiembro);
+document.getElementById('form-prestamo').addEventListener('submit', tomarPrestado);
+document.getElementById('form-devolucion').addEventListener('submit', devolverLibro);
+document.getElementById('mostrar-libros').addEventListener('click', mostrarLibrosDisponibles);
+
 document.addEventListener("DOMContentLoaded", () => {
   loadLibros();
   loadMiembros();

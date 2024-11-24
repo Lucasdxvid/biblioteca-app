@@ -1,5 +1,5 @@
-const apiUrlLibros = 'http://localhost:3000/libros';
-const apiUrlMiembros = 'http://localhost:3000/miembros';
+const apiUrlLibros = 'http://localhost:3000/api/libros';
+const apiUrlMiembros = 'http://localhost:3000/api/miembros';
 
 // Función para cargar todos los libros
 async function loadLibros() {

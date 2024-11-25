@@ -26,6 +26,9 @@ async function loadLibros() {
     `;
     itemTableBody.appendChild(row);
   });
+
+  // Cargar libros en los selectores
+  loadLibrosSelect(libros);
 }
 
 // Función para cargar todos los miembros
@@ -47,6 +50,51 @@ async function loadMiembros() {
       </td>
     `;
     itemTableBody.appendChild(row);
+  });
+
+  // Cargar miembros en los selectores
+  loadMiembrosSelect(miembros);
+}
+
+// Función para cargar libros en los selectores
+function loadLibrosSelect(libros) {
+  const libroSelect = document.getElementById('libro-select');
+  const libroSelectDevolucion = document.getElementById('libro-select-devolucion');
+  libroSelect.innerHTML = '<option value="">Seleccione un libro</option>';
+  libroSelectDevolucion.innerHTML = '<option value="">Seleccione un libro</option>';
+
+  libros.forEach(libro => {
+    if (libro.disponible) {
+      const option = document.createElement('option');
+      option.value = libro.id;
+      option.textContent = libro.titulo;
+      libroSelect.appendChild(option);
+    }
+
+    const optionDevolucion = document.createElement('option');
+    optionDevolucion.value = libro.id;
+    optionDevolucion.textContent = libro.titulo;
+    libroSelectDevolucion.appendChild(optionDevolucion);
+  });
+}
+
+// Función para cargar miembros en los selectores
+function loadMiembrosSelect(miembros) {
+  const miembroSelect = document.getElementById('miembro-select');
+  const miembroSelectDevolucion = document.getElementById('miembro-select-devolucion');
+  miembroSelect.innerHTML = '<option value="">Seleccione un miembro</option>';
+  miembroSelectDevolucion.innerHTML = '<option value="">Seleccione un miembro</option>';
+
+  miembros.forEach(miembro => {
+    const option = document.createElement('option');
+    option.value = miembro.id;
+    option.textContent = miembro.nombre;
+    miembroSelect.appendChild(option);
+
+    const optionDevolucion = document.createElement('option');
+    optionDevolucion.value = miembro.id;
+    optionDevolucion.textContent = miembro.nombre;
+    miembroSelectDevolucion.appendChild(optionDevolucion);
   });
 }
 
